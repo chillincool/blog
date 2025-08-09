@@ -1,3 +1,6 @@
 {
-  "hello": 1
+  "streaming": 1,
+  "debrid": 1,
+  "torrent": 1,
+  "plex": 1
 }
