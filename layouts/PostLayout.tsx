@@ -9,6 +9,7 @@ import Image from '@/components/Image'
 import Tag from '@/components/Tag'
 import siteMetadata from '@/data/siteMetadata'
 import ScrollTopAndComment from '@/components/ScrollTopAndComment'
+import SocialIcon from '@/components/social-icons';
 
 const editUrl = (path) => `${siteMetadata.siteRepo}/blob/main/data/${path}`
 const discussUrl = (path) =>
@@ -74,18 +75,40 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                       <dl className="text-sm leading-5 font-medium whitespace-nowrap">
                         <dt className="sr-only">Name</dt>
                         <dd className="text-gray-900 dark:text-gray-100">{author.name}</dd>
-                        <dt className="sr-only">Twitter</dt>
+                        <dt className="sr-only">Github</dt>
                         <dd>
-                          {author.twitter && (
-                            <Link
-                              href={author.twitter}
-                              className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
-                            >
-                              {author.twitter
-                                .replace('https://twitter.com/', '@')
-                                .replace('https://x.com/', '@')}
-                            </Link>
-                          )}
+                          <div className="flex space-x-2">
+                            {author.email && (
+                              <Link
+                                href={`mailto:${siteMetadata.email}`}
+                                className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
+                                aria-label="Email Address"
+                              >
+                                <SocialIcon kind="mail" href={`mailto:${siteMetadata.email}`} size={5} />
+                              </Link>
+                            )}
+
+                            {author.github && (
+                              <Link
+                                href={author.github}
+                                className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
+                                aria-label="Github Profile"
+                              >
+                                <SocialIcon kind="github" href={author.github} size={5} />
+                              </Link>
+                            )}
+
+                            {author.linkedin && (
+                              <Link
+                                href={author.linkedin}
+                                className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
+                                aria-label="LinkedIn Profile"
+                              >
+                                <SocialIcon kind="linkedin" href={author.linkedin} size={5} />
+                              </Link>
+                            )}
+                          </div>
+
                         </dd>
                       </dl>
                     </li>

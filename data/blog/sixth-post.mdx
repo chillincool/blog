@@ -1,0 +1,80 @@
+---
+title: "sixth post"
+date: "2025-08-09"
+tags: []
+draft: true
+summary: "more posts"
+images: []
+---
+
+# header
+
+fluff fluff sentence
+
+more fluff
+
+here's and exmaple of code:
+<Tabs labels={['npm', 'pnpm', 'yarn']} group="install">
+  <TabPanel>
+    <CodeBlock language="bash" code={`npm i your-package`} />
+  </TabPanel>
+  <TabPanel>
+    <CodeBlock language="bash" code={`pnpm add your-package`} />
+  </TabPanel>
+  <TabPanel>
+    <CodeBlock language="bash" code={`yarn add your-package`} />
+  </TabPanel>
+</Tabs>
+
+<Tabs labels={['npm', 'pnpm', 'yarn']} group="install">
+  <TabPanel>
+    <CodeBlock
+      language="bash"
+      code={`# Install dependencies
+npm install
+
+# Build the project
+npm run build
+
+# Start the dev server
+npm run dev`}
+    />
+  </TabPanel>
+  <TabPanel>
+    <CodeBlock
+      language="bash"
+      code={`# Install dependencies
+pnpm install
+
+# Build the project
+pnpm build
+
+# Start the dev server
+pnpm dev`}
+    />
+  </TabPanel>
+  <TabPanel>
+    <CodeBlock
+      language="css"
+      code={`
+@reference "./tailwind.css";
+
+/**
+ * CSS Styles for code highlighting.
+ * Feel free to customize token styles 
+ * by copying from a prismjs compatible theme:
+ * https://github.com/PrismJS/prism-themes
+ */
+
+/* Code title styles */
+.remark-code-title {
+  @apply rounded-xs bg-gray-700 px-5 py-3 font-mono text-sm font-bold text-gray-200 dark:bg-gray-800;
+}
+
+.remark-code-title + div > pre {
+  @apply mt-0 rounded-t-none;
+}`}
+    />
+  </TabPanel>
+</Tabs>
+

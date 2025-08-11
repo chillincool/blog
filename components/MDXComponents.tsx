@@ -5,6 +5,9 @@ import type { MDXComponents } from 'mdx/types'
 import Image from './Image'
 import CustomLink from './Link'
 import TableWrapper from './TableWrapper'
+import CodeBlock from './mdx/CodeBlock'
+import { Tabs, TabPanel } from './mdx/Tabs'
+import Lucidchart from './mdx/Lucidchart'
 
 export const components: MDXComponents = {
   Image,
@@ -13,4 +16,8 @@ export const components: MDXComponents = {
   pre: Pre,
   table: TableWrapper,
   BlogNewsletterForm,
+  CodeBlock,
+  Tabs,
+  TabPanel,
+  Lucidchart,
 }

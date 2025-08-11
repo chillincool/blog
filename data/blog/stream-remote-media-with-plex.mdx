@@ -5,40 +5,101 @@ lastmod: 2025-08-06T22:29:16-05:00
 tags: ['streaming', 'debrid', 'torrent', 'plex']
 draft: false
 summary: "Placeholder summary"
-image: ""
+images: []
 ---
-# Stream Remote Media With Plex
 
 ## Introduction
 
-I've been a torrent user since about 2003.  Most of that time was spent using private trackers where I became very accustomed to reliable quality and naming standards.  Pair this with Radarr, Sonarr, and any of the other *arr apps you need and you've pretty much got a set-and-forget media content service.
+_**It wasn't that long ago**_ that streaming even 480p quality content wasn't reliable for a lot of people.  Torrent downloads shipped as 40+ part RAR archives with SFVs included to run checksums to deal with the unreliable Internet.
+Streaming options were limited. Downloads took hours or days to finish and often didn't end up being what you expected.  Whether a given device could deal with the audio and video codecs of a file was a crapshoot.
 
-This is great until you start running out of space and having to make some difficult decisions.  Do you delete things you think you're less likely to watch, or lower the quality to decrease filesize? Do you continue to purchase and run more and more hardware to support keeping everything?  All of these options decrease the user experience.
+Your only option to get exactly what you wanted at the quality you wanted without fuss was to buy DVDs and Blurays, which took up space and have a problematic and expensive future:
+when old technology falls out of favor all of the market drops off -- usually leaving you to choose between super low-quality gear marketed towards people who "just want it to play" and ultra high-end hi-fi gear meant for enthusiasts.
+No mid tier.  Not great.
 
-## Debrid
+_**Today,**_ the Internet is fast, cheap and reliable for most people living in urban areas.  Downloads are more predictable and file compatability (with transcoding) is no longer an issue.
+Streaming can now easily handle the highest quality of audio and visual that content has to offer without any compromises.  We're in the digital age.  It's cheaper, better for the environment, and faster.  _**Embrace it.**_
 
-*Enter Debrid.* Debrid is similar to a traditional hosted server that you would use to download files from the Internet and then connect via FTP or similar to grab the files.  The key difference is that Debrid services cache the files that people download so they can be made available in other people's debrid "buckets" without storing the file multiple times.  This means most things grab will instantly complete even if the filesize is extremely large.  As long as you've got reliable ~130 Mbps connection to their servers, even the most detailed and active scenes from a 4K remux should play without issue.
+In this post, we'll be going over everything needed to set up your own private streaming service that utilizes [RealDebrid](https://real-debrid.com/) as a storage backend.
 
-```
-I think we all know the moral issues of downloading content.  We won't mull over that here.
+This is meant to be a basic setup that doesn't require owning a public domain, having internal dns, or having managed network equipment.  Configuration required the aforementioned items is outside the scope of this post.
 
-But also consider:  downloading in this manner isn't great for the community either -- this entire setup relies on an active torrenting community, yet by design does not participate in it.  If everyone switched to this, it wouldn't work.
-```
+>Without going into the nuances of theoretical lost revenue for everyone involved in making content exist, if **everyone** downloaded content without paying -- there would be no content.  If you have the means to do so, you should pay for content.
 
-The most popular service is RealDebrid.  You feed it magnet links or torrent files and then you can download the file from your bucket with a download link on from their website.  They also have an API that can be used for automation.  This API is what we'll be using to interact with this service.
+<TOCInline toc={props.toc} asDisclosure />
 
-## Zurg 
+## All the moving parts
 
-Zurg talks to RealDebrid's API and serves the files as WEBDAV
+### PVR
+These are the services that will handle collecting media.
 
-## Rclone
+#### Prowlarr
+    [Prowlarr](https://github.com/Prowlarr/Prowlarr) is an indexer manager/proxy that integrates with your various PVR apps. Prowlarr supports management of both Torrent Trackers and Usenet Indexers. It integrates seamlessly with Radarr and Sonarr -- offering complete management of your indexers with no per app Indexer setup required.
 
-Rclone mounts the WEBDAV being served by Zurg as a FUSE mount.  Access to that FUSE mount is granted to Decypharr, Radarr, Sonarr, and Plex.
+#### Sonarr
+    [Sonarr](https://github.com/Sonarr/Sonarr) is a PVR for Usenet and BitTorrent users. It can monitor multiple RSS feeds for new episodes of your favorite shows and will grab, sort and rename them. It can also be configured to automatically upgrade the quality of files already downloaded when a better quality format becomes available.
 
-## Downloading
+#### Radarr
+[Radarr](https://github.com/Radarr/Radarr) is a movie collection manager for Usenet and BitTorrent users. It can monitor multiple RSS feeds for new movies and will interface with clients and indexers to grab, sort, and rename them. It can also be configured to automatically upgrade the quality of existing files in the library when a better quality format becomes available.
 
-There are a few options for "download clients" for debrid.  I won't go into all of them, but Riven and Decypharr are what I looked into.  
-### Riven
-Riven is attempting to combine sonarr and radarr and deal with managing hd and 4k simultaenously, but it (in my opinion) lacks sophistication to replace these apps by itself.  Combined with Mediafusion, Zilean, and Comet, I think Rivean can be pretty powerful, especially if you've only got access to public trackers.  However, all of these apps are still being developed and there's not much info on them if you can't get them installed exactly as the exampled.
-### Decypharr
-Decypharr emulates qbittorrent.  You add it as a download client in Sonarr/Radarr.  When a download request is sent to Decypharr, it sends the download request to RealDebrid.  When the download is ready it creates a symlink to your configured downloads folder.  Sonarr/Radarr will then process the download by creating a symlink in your Plex library and deleting the symlink in the downloads folder.  The final result is that you will have a symlink in your plex library that is pointing at your RealDebrid-backed rclone mount that Plex will see as a normal local media file.
+#### Overseerr (optional)
+[Overseerr](https://github.com/sct/overseerr) is a free and open source software application for managing requests for your media library. It integrates with your existing services, such as Sonarr, Radarr, and Plex!
+
+### Remote Storage
+These are the services that will manage and mount the remote storage.
+
+#### RealDebrid
+[RealDebrid](https://real-debrid.com/) is a paid streaming link service — it acts like a massive, shared torrent cache. When anyone downloads a torrent through Real-Debrid, it’s stored and cached on their servers. If you grab that same file later, you’re pulling it directly from Real-Debrid at full speed, often instantly. This also means you can use it as “unlimited” cloud storage for Plex: add a torrent, let Real-Debrid cache it, then stream it straight to your Plex library without keeping the files locally.
+
+There are a few other options out there, but because of slight differences in the way they work, support through various apps is a mixed bag.  Support for RealDebrid is the default on every application in this post, as well as the alternatives not mentioned.
+
+#### Zurg
+[Zurg](https://github.com/debridmediamanager/zurg-testing) is self-hosted Real-Debrid webdav server written from scratch. Together with rclone it can mount your Real-Debrid torrent library into your file system like Dropbox.
+
+#### Rclone
+[Rclone](https://github.com/rclone/rclone) ("rsync for cloud storage") is a command-line program to sync files and directories to and from different cloud storage providers.
+
+### Download clients
+These are the services that will fullfill the downloads requested by the PVR apps.  The optional apps downloading locally for certain content you want available without Internet.
+Managing what is local or remote is outside the scope of thos post.
+
+#### Decypharr
+[Decypharr](https://github.com/sirrobot01/decypharr) is an implementation of QbitTorrent with Multiple Debrid service support, written in Go.
+Decypharr combines the power of QBittorrent with popular Debrid services to enhance your media management. It provides a familiar interface for Sonarr, Radarr, and other *Arr applications.
+
+#### qBittorrent (optional)
+[qBittorrent](https://github.com/qbittorrent/qBittorrent) is a bittorrent client programmed in C++ / Qt that uses libtorrent (sometimes called libtorrent-rasterbar) by Arvid Norberg.
+
+#### Sabnzbd (optional)
+[SABnzbd](https://github.com/sabnzbd/sabnzbd) is an Open Source Binary Newsreader written in Python.
+
+### Streaming
+These are the services that can handle streaming the media to client devices.  I recommend Plex, but I've listed the main alternatives. Why you might choose an alternative is outside the scope of this post. 
+
+#### Plex
+[Plex](https://www.plex.tv/) is a powerful media server platform that lets you organize, stream, and enjoy your personal collection of movies, TV shows, music, and photos — all from one place. Once set up, Plex automatically fetches artwork, trailers, and detailed metadata to make your library look and feel like a professional streaming service. You can access your content anywhere, on virtually any device, and even share your library with friends and family. Plex also offers free ad-supported movies, TV, and live channels, making it a one-stop entertainment hub for both your personal media and online content.
+
+#### Emby (alternative)
+[Emby](https://github.com/MediaBrowser/Emby) is a personal media server with apps on just about every device.
+It features a REST-based API with built-in documention to facilitate client development. We also have client libraries for our API to enable rapid development.
+
+#### Jellyfin (alternative)
+[Jellyfin](https://github.com/jellyfin/jellyfin) is a Free Software Media System that puts you in control of managing and streaming your media. It is an alternative to the proprietary Emby and Plex, to provide media from a dedicated server to end-user devices via multiple apps. Jellyfin is descended from Emby's 3.5.2 release and ported to the .NET Core framework to enable full cross-platform support.
+
+### Design
+
+![plex-wd-workflow](/static/images/plex-rd-workflow.png)
+
+As illustrated in the example above, the goal is to download and store content on RealDebrid and get Plex to see that content as local, organized files.
+
+1. Zurg mounts RealDebrid via API calls and then presents it as a WEBDAV share.
+2. Rclone mounts the WEBDAV share and makes it accessible to other containers.
+3. Decypharr, Radarr, Sonarr, and Plex all mount the Rclone mount to ensure symlinks resolve.
+4. Radarr/Sonarr use Prowlarr to find the best version of your requests and send the torrent to Decypharr.
+5. Decypharr sends the torrent to RealDebrid to download via API calls.  Once completed, a symlink is created from the rclone mount to the downloads folder.
+6. Radarr/Sonarr see the file in the downloads folder as complete and performs processing.  It moves the symlink to the Plex library, organizes, and renames the file.
+7. Radarr/Sonarr tell Plex to scan its library for the new files just added.
+8. Plex sees the remote files as local, well-organized files.
+9. Plex, if necessary, converts files for compatability on the fly and streams them to client devices.
+
+### Setup

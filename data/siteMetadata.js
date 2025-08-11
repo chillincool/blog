@@ -1,7 +1,7 @@
 /** @type {import("pliny/config").PlinyConfig } */
 const siteMetadata = {
   title: 'CHILLINCOOL BLOG',
-  author: 'Tails Azimuth',
+  author: 'Chris Sykes',
   headerTitle: 'ChillincoolBLOG',
   description: 'A blog to document my hobbies',
   language: 'en-us',
