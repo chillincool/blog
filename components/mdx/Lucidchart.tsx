@@ -9,7 +9,14 @@ export default function Lucidchart({
 }) {
   return (
     <div className="my-6">
-      <iframe title="Lucidchart Diagram" src={src} width={width} height={height} style={{ border: 0 }} allowFullScreen />
+      <iframe
+        title="Lucidchart Diagram"
+        src={src}
+        width={width}
+        height={height}
+        style={{ border: 0 }}
+        allowFullScreen
+      />
     </div>
   )
 }
