@@ -1,13 +1,13 @@
 /** @type {import("pliny/config").PlinyConfig } */
 const siteMetadata = {
-  title: 'CHILLINCOOL BLOG',
+  title: 'ChillincoolBLOG',
   author: 'Chris Sykes',
   headerTitle: 'ChillincoolBLOG',
   description: 'A blog to document my hobbies',
   language: 'en-us',
   theme: 'system', // system, dark or light
-  siteUrl: 'https://tailwind-css-starter-blog-jade-theta.vercel.app',
-  siteRepo: 'https://github.com/chillincool/tailwind-nextjs-starter-blog',
+  siteUrl: 'https://blog.chillincool.net',
+  siteRepo: 'https://github.com/chillincool/blog',
   siteLogo: `${process.env.BASE_PATH || ''}/static/images/logo.png`,
   socialBanner: `${process.env.BASE_PATH || ''}/static/images/twitter-card.png`,
   email: 'chris@chillincool.net',
