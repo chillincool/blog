@@ -24,9 +24,9 @@ export function Tabs({
             key={idx}
             className={({ selected }) =>
               classNames(
-                'px-3 py-2 text-sm font-medium rounded-t-lg outline-none',
+                'rounded-t-lg px-3 py-2 text-sm font-medium outline-none',
                 selected
-                  ? 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100'
+                  ? 'bg-gray-100 text-gray-900 dark:bg-gray-800 dark:text-gray-100'
                   : 'text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white'
               )
             }

@@ -39,7 +39,7 @@ export default function CodeBlock({
   }
 
   return (
-    <div className={`relative group ${className}`}>
+    <div className={`group relative ${className}`}>
       {showCopy && (
         <button
           type="button"
@@ -47,13 +47,13 @@ export default function CodeBlock({
           aria-label={copied ? 'Copied' : 'Copy code to clipboard'}
           className="
             absolute right-2 top-2 z-10
-            rounded-md px-2 py-1 text-xs font-medium
-            border border-gray-300 dark:border-gray-700
-            bg-white/80 dark:bg-gray-800/80
-            backdrop-blur hover:bg-white dark:hover:bg-gray-800
-            transition
-            opacity-0 group-hover:opacity-100 focus:opacity-100
-            focus:outline-none focus:ring-2 focus:ring-indigo-500
+            rounded-md border border-gray-300 bg-white/80 px-2
+            py-1 text-xs font-medium
+            opacity-0 backdrop-blur
+            transition hover:bg-white focus:opacity-100
+            focus:outline-none
+            focus:ring-2 focus:ring-indigo-500 group-hover:opacity-100
+            dark:border-gray-700 dark:bg-gray-800/80 dark:hover:bg-gray-800
           "
         >
           {copied ? 'Copied' : 'Copy'}
@@ -69,7 +69,7 @@ export default function CodeBlock({
             {tokens.map((line, i) => (
               <div key={i} {...getLineProps({ line })}>
                 {showLineNumbers && (
-                  <span className="select-none opacity-50 mr-4 inline-block w-6 text-right">
+                  <span className="mr-4 inline-block w-6 select-none text-right opacity-50">
                     {i + 1}
                   </span>
                 )}
