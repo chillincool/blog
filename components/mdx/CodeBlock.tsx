@@ -61,7 +61,13 @@ export default function CodeBlock({
       )}
 
       <Highlight code={toCopy} language={language}>
-        {({ className: preClass, style, tokens, getLineProps, getTokenProps }) => (
+        {({
+          className: preClass,
+          style,
+          tokens,
+          getLineProps,
+          getTokenProps,
+        }) => (
           <pre
             className={`${preClass} overflow-x-auto rounded-lg p-4 pr-12`}
             style={style} // no theme, so this will mostly be empty

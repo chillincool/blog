@@ -30,7 +30,13 @@ interface LayoutProps {
   children: ReactNode
 }
 
-export default function PostLayout({ content, authorDetails, next, prev, children }: LayoutProps) {
+export default function PostLayout({
+  content,
+  authorDetails,
+  next,
+  prev,
+  children,
+}: LayoutProps) {
   const { filePath, path, slug, date, title, tags } = content
   const basePath = path.split('/')[0]
 
@@ -46,7 +52,10 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                   <dt className="sr-only">Published on</dt>
                   <dd className="text-base font-medium leading-6 text-gray-500 dark:text-gray-400">
                     <time dateTime={date}>
-                      {new Date(date).toLocaleDateString(siteMetadata.locale, postDateTemplate)}
+                      {new Date(date).toLocaleDateString(
+                        siteMetadata.locale,
+                        postDateTemplate
+                      )}
                     </time>
                   </dd>
                 </div>
@@ -62,7 +71,10 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
               <dd>
                 <ul className="flex flex-wrap justify-center gap-4 sm:space-x-12 xl:block xl:space-x-0 xl:space-y-8">
                   {authorDetails.map((author) => (
-                    <li className="flex items-center space-x-2" key={author.name}>
+                    <li
+                      className="flex items-center space-x-2"
+                      key={author.name}
+                    >
                       {author.avatar && (
                         <Image
                           src={author.avatar}
@@ -74,7 +86,9 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                       )}
                       <dl className="whitespace-nowrap text-sm font-medium leading-5">
                         <dt className="sr-only">Name</dt>
-                        <dd className="text-gray-900 dark:text-gray-100">{author.name}</dd>
+                        <dd className="text-gray-900 dark:text-gray-100">
+                          {author.name}
+                        </dd>
                         <dt className="sr-only">Github</dt>
                         <dd>
                           <div className="flex space-x-2">
@@ -98,7 +112,11 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                                 className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
                                 aria-label="Github Profile"
                               >
-                                <SocialIcon kind="github" href={author.github} size={5} />
+                                <SocialIcon
+                                  kind="github"
+                                  href={author.github}
+                                  size={5}
+                                />
                               </Link>
                             )}
 
@@ -108,7 +126,11 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                                 className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
                                 aria-label="LinkedIn Profile"
                               >
-                                <SocialIcon kind="linkedin" href={author.linkedin} size={5} />
+                                <SocialIcon
+                                  kind="linkedin"
+                                  href={author.linkedin}
+                                  size={5}
+                                />
                               </Link>
                             )}
                           </div>
@@ -120,7 +142,9 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
               </dd>
             </dl>
             <div className="divide-y divide-gray-200 xl:col-span-3 xl:row-span-2 xl:pb-0 dark:divide-gray-700">
-              <div className="prose dark:prose-invert max-w-none pb-8 pt-10">{children}</div>
+              <div className="prose dark:prose-invert max-w-none pb-8 pt-10">
+                {children}
+              </div>
               <div className="pb-6 pt-6 text-sm text-gray-700 dark:text-gray-300">
                 <Link href={editUrl(filePath)}>View on GitHub</Link>
               </div>
