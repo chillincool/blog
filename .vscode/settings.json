@@ -1,4 +1,107 @@
 {
+  // format & lint on save
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit",
+    "source.organizeImports": "explicit"
+  },
+
+  // use the workspace TypeScript
   "typescript.tsdk": "node_modules/typescript/lib",
-  "typescript.enablePromptUseWorkspaceTsdk": true
+
+  // ESLint validation (flat config friendly)
+  "eslint.useFlatConfig": true,
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ],
+
+  // Tailwind CSS IntelliSense
+  "files.associations": { "*.css": "tailwindcss" },
+  "tailwindCSS.includeLanguages": {
+    "typescript": "javascript",
+    "typescriptreact": "javascript"
+  },
+  "tailwindCSS.experimental.classRegex": [
+    "clsx\\(([^)]*)\\)",
+    "cn\\(([^)]*)\\)",
+    "cva\\(([^)]*)\\)"
+  ],
+
+  // ignore build output in search/watcher
+  "files.watcherExclude": {
+    "**/.next/**": true,
+    "**/.contentlayer/**": true,
+    "**/node_modules/**": true
+  },
+  "search.exclude": {
+    "**/.next": true,
+    "**/.contentlayer": true,
+    "**/node_modules": true
+  },
+
+  // --- proofreading stack ---
+
+  // --- LTeX: Grammar/Style only ---
+  "ltex.enabled": true,
+  "ltex.language": "en-US",
+  "ltex.additionalRules.motherTongue": "en-US",
+  "ltex.enabledLanguageIds": ["markdown", "plaintext"],
+  "ltex.diagnosticSeverity": "information",
+  // Disable LTeX's built-in spell checking
+  "ltex.disabledRules": {
+    "en-US": ["MORFOLOGIK_RULE_EN_US"]
+  },
+  // (Optional) use an external dictionary file as well
+  // "ltex.hunspell.dictionaryPath": [
+  //   "${workspaceFolder}/ltex/dictionaries"
+  // ],
+  // "ltex.hunspell.useWorkspaceDictionary": true,
+
+  // Code Spell Checker – typos
+  "cSpell.language": "en-US",
+  "cSpell.enableFiletypes": ["markdown", "plaintext", "yaml", "json"],
+  "cSpell.userWords": [
+    "TailwindCSS",
+    "TypeScript",
+    "Next.js",
+    "ESLint",
+    "Prettier",
+    "Hugo",
+    "k3s",
+    "OIDC",
+    "Auth0",
+    "Authentik",
+    "Traefik",
+    "Plex"
+  ],
+  "cSpell.words": [
+    "Arrs",
+    "Arvid",
+    "Blurays",
+    "buildx",
+    "containerd",
+    "Debrid",
+    "Decypharr",
+    "Emby",
+    "IMDB",
+    "Jellyfin",
+    "keyrings",
+    "libtorrent",
+    "Norberg",
+    "Overseerr",
+    "Prowlarr",
+    "Qbittorrent",
+    "Radarr",
+    "rasterbar",
+    "rclone",
+    "realdebrid",
+    "Sabnzbd",
+    "Sonarr",
+    "WEBDAV",
+    "zurg"
+  ]
 }

@@ -1,0 +1,55 @@
+{
+  "version": "2.0.0",
+  "inputs": [
+    {
+      "id": "postTitle",
+      "type": "promptString",
+      "description": "Post Title"
+    },
+    {
+      "id": "postSummary",
+      "type": "promptString",
+      "description": "Post description (optional)",
+      "default": ""
+    }
+  ],
+  "tasks": [
+    {
+      "label": "Trunk: Install tools",
+      "type": "shell",
+      "command": "trunk install",
+      "problemMatcher": []
+    },
+    {
+      "label": "Trunk: Check (all linters)",
+      "type": "shell",
+      "command": "trunk check",
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Trunk: Format (where supported)",
+      "type": "shell",
+      "command": "trunk fmt",
+      "problemMatcher": []
+    },
+    {
+      "label": "Lint (ESLint)",
+      "type": "shell",
+      "command": "yarn lint",
+      "problemMatcher": []
+    },
+    {
+      "label": "Format (Prettier)",
+      "type": "shell",
+      "command": "yarn prettier --write .",
+      "problemMatcher": []
+    },
+    {
+      "label": "New Blog Post",
+      "type": "shell",
+      "command": "node scripts/new-post.mjs \"${input:postTitle}\" \"${input:postSummary}\"",
+      "problemMatcher": []
+    }
+  ]
+}
