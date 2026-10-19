@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Chillincool Library Guide</title>
+<style>
+/* Fonts are served from the blog itself; its Content-Security-Policy only allows its own fonts */
+@font-face { font-family: "Outfit"; src: url("/static/fonts/library/outfit.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
+@font-face { font-family: "Atkinson Hyperlegible"; src: url("/static/fonts/library/atkinson-400.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Atkinson Hyperlegible"; src: url("/static/fonts/library/atkinson-700.woff2") format("woff2"); font-weight: 700; font-display: swap; }
+/* Layout: one readable column; each service is a section with a "where it works" chip and numbered steps only where order matters */
+:root {
+  --bg: #f3f4f6;
+  --surface: #ffffff;
+  --fg: #1d2129;
+  --muted: #5b6372;
+  --line: #d9dde4;
+  --accent: #2f5fa8;
+  --accent-soft: #e4ecf8;
+  --home: #8a5a12;
+  --home-soft: #f7ecd9;
+  --anywhere: #2b6b45;
+  --anywhere-soft: #e1f1e7;
+  --display: "Outfit", "Segoe UI", system-ui, sans-serif;
+  --body: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --mono: ui-monospace, "SF Mono", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #15181d; --surface: #1d2128; --fg: #e8eaee; --muted: #a2aab7; --line: #2f3540;
+    --accent: #8fb3ea; --accent-soft: #23314a; --home: #e8b56a; --home-soft: #3a2d18;
+    --anywhere: #84cfa2; --anywhere-soft: #1d3527; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #15181d; --surface: #1d2128; --fg: #e8eaee; --muted: #a2aab7; --line: #2f3540;
+  --accent: #8fb3ea; --accent-soft: #23314a; --home: #e8b56a; --home-soft: #3a2d18;
+  --anywhere: #84cfa2; --anywhere-soft: #1d3527; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 17px; line-height: 1.6; padding-inline: 16px; padding-block: 40px 64px; }
+.wrap { max-width: 720px; margin: 0 auto; display: grid; gap: 28px; }
+h1, h2, h3 { font-family: var(--display); line-height: 1.2; text-wrap: balance; margin: 0; }
+h1 { font-size: 2.3rem; font-weight: 700; letter-spacing: -0.01em; }
+h2 { font-size: 1.45rem; font-weight: 700; }
+h3 { font-size: 1.08rem; font-weight: 500; margin-top: 6px; }
+p { margin: 0; }
+a { color: var(--accent); text-underline-offset: 3px; }
+a:focus-visible, button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+header { display: grid; gap: 12px; }
+.lede { font-size: 1.12rem; color: var(--muted); max-width: 60ch; }
+.eyebrow { font-family: var(--display); text-transform: uppercase; letter-spacing: 0.12em; font-size: 0.78rem; color: var(--muted); font-weight: 500; }
+.services { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; }
+.svc { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; display: grid; gap: 6px; align-content: start; }
+.svc b { font-family: var(--display); font-weight: 700; font-size: 1.05rem; }
+.svc span { color: var(--muted); font-size: 0.95rem; }
+section { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 24px 22px; display: grid; gap: 14px; min-width: 0; }
+.sechead { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 14px; }
+.chip { justify-self: start; font-family: var(--display); font-size: 0.8rem; font-weight: 500; letter-spacing: 0.04em; padding: 3px 10px; border-radius: 999px; white-space: nowrap; }
+.chip.anywhere { background: var(--anywhere-soft); color: var(--anywhere); }
+.chip.home { background: var(--home-soft); color: var(--home); }
+ol, ul { margin: 0; padding-left: 1.3em; display: grid; gap: 8px; }
+li::marker { color: var(--muted); font-weight: 700; }
+.addr { font-family: var(--mono); font-size: 0.92em; background: var(--accent-soft); color: var(--fg); padding: 1px 6px; border-radius: 5px; overflow-wrap: anywhere; }
+.btn { font-weight: 700; }
+.note { border-left: 3px solid var(--accent); background: var(--accent-soft); padding: 12px 14px; border-radius: 0 8px 8px 0; display: grid; gap: 6px; }
+.note.home { border-color: var(--home); background: var(--home-soft); }
+.apps { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+.app { border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; display: grid; gap: 8px; align-content: start; min-width: 0; }
+.app h3 { margin: 0; }
+.app p { font-size: 0.96rem; }
+.small { font-size: 0.93rem; color: var(--muted); }
+dl { margin: 0; display: grid; gap: 14px; }
+dt { font-weight: 700; }
+dd { margin: 2px 0 0; color: var(--muted); }
+footer { color: var(--muted); font-size: 0.93rem; text-align: center; }
+@media (max-width: 480px) { body { font-size: 16px; padding-block: 24px 48px; } h1 { font-size: 1.9rem; } section { padding: 20px 16px; } }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Chillincool · New user guide</div>
+    <h1>Your library, set up</h1>
+    <p class="lede">Audiobooks to listen to on the go, ebooks to read, and a way to find new books, all from anywhere. This page walks you through your account first, then each piece.</p>
+    <div class="services" aria-label="What you have access to">
+      <div class="svc"><b>Audiobookshelf</b><span>Listen to audiobooks on the web or your phone</span><span class="chip anywhere">Works anywhere</span></div>
+      <div class="svc"><b>BookBoss</b><span>Browse and download ebooks</span><span class="chip anywhere">Works anywhere</span></div>
+      <div class="svc"><b>Shelfmark</b><span>Request books and audiobooks</span><span class="chip anywhere">Works anywhere</span></div>
+    </div>
+  </header>
+
+  <section id="account" aria-labelledby="account-h">
+    <div class="sechead"><h2 id="account-h">1. Your account</h2></div>
+    <p><b>Keycloak</b> is the one login for everything here. You sign in once with your Keycloak account, and each app recognizes you. There are no separate passwords for each app.</p>
+    <p>Chris creates your account. You can't sign up on your own.</p>
+    <h3>Before you start</h3>
+    <p>Install an <b>authenticator app</b> on your phone. It shows a 6-digit code that changes every 30 seconds, and you'll need it to sign in. Any of these work:</p>
+    <ul>
+      <li><b>Google Authenticator</b> or <b>Microsoft Authenticator</b>, free on the App Store and Google Play</li>
+      <li>On iPhone, the built-in <b>Passwords</b> app also works</li>
+    </ul>
+    <p class="small">If you already use one of these for another account, use the same app.</p>
+    <h3>Set up your account</h3>
+    <ol>
+      <li>Look for an email from <b>CHILLINCOOL Keycloak</b> (<span class="addr">keycloak@chillincool.net</span>). Check your spam folder if it isn't there.</li>
+      <li>Open the link in the email. It only works for a limited time, so do this soon. If it has expired, ask Chris to send a new one.</li>
+      <li>Choose a password.</li>
+      <li>Keycloak shows a QR code. In your authenticator app, add a new account and scan the code. If you're setting up on your phone and can't scan your own screen, tap <b>Unable to scan?</b> and type the key it shows into the app instead.</li>
+      <li>Type the 6-digit code from the app into Keycloak to confirm. You can leave the device name blank.</li>
+    </ol>
+    <h3>Signing in from now on</h3>
+    <p>Whenever an app sends you to <span class="addr">login.chillincool.net</span>, enter your username or email and password, then the current 6-digit code from your authenticator app. Phone apps like Audiobookshelf stay signed in, so you won't do this often.</p>
+    <div class="note">
+      <p><b>Managing your account:</b> go to <a href="https://login.chillincool.net">login.chillincool.net</a> to change your password or authenticator app. You can also add a passkey there; signing in with a passkey skips the 6-digit code.</p>
+      <p><b>Forgot your password?</b> Click <span class="btn">Forgot Password?</span> on the sign-in page and Keycloak will email you a reset link.</p>
+    </div>
+  </section>
+
+  <section id="audiobooks" aria-labelledby="abs-h">
+    <div class="sechead"><h2 id="abs-h">2. Audiobooks: Audiobookshelf</h2><span class="chip anywhere">Works anywhere</span></div>
+    <h3>On the web</h3>
+    <ol>
+      <li>Go to <a href="https://audiobookshelf.chillincool.net">audiobookshelf.chillincool.net</a>.</li>
+      <li>Click <span class="btn">Login with Keycloak</span>. Don't type into the username and password boxes above it; those are for a different kind of account and will say "Unauthorized".</li>
+      <li>Sign in with your Keycloak account. You'll land in the library.</li>
+    </ol>
+    <h3>On your phone</h3>
+    <div class="apps">
+      <div class="app">
+        <h3>iPhone: Plappa</h3>
+        <p>Install <b>Plappa</b> from the App Store. It's free to listen. Downloading books for offline listening is a one-time $4.99 upgrade inside the app.</p>
+        <ol>
+          <li>Add a server and enter <span class="addr">https://audiobookshelf.chillincool.net</span></li>
+          <li>Choose the <b>SSO / OpenID</b> sign-in option, not username and password.</li>
+          <li>Sign in with Keycloak when it opens the login page.</li>
+        </ol>
+      </div>
+      <div class="app">
+        <h3>Android: Audiobookshelf</h3>
+        <p>Install the official <b>Audiobookshelf</b> app from the Google Play Store. It's free, including downloads.</p>
+        <ol>
+          <li>Enter the server address <span class="addr">https://audiobookshelf.chillincool.net</span></li>
+          <li>Tap <span class="btn">Login with Keycloak</span>.</li>
+          <li>Sign in with Keycloak when it opens the login page.</li>
+        </ol>
+      </div>
+    </div>
+    <p class="small">Your listening position syncs between the website and your phone, so you can pick up where you left off on either. Download books before a trip or a long drive in case you lose signal.</p>
+  </section>
+
+  <section id="ebooks" aria-labelledby="bb-h">
+    <div class="sechead"><h2 id="bb-h">3. Ebooks: BookBoss</h2><span class="chip anywhere">Works anywhere</span></div>
+    <p>Before your first visit, Chris needs to create your BookBoss account using the same email address as your Keycloak account. Ask Chris to set it up.</p>
+    <ol>
+      <li>Go to <a href="https://bookboss.chillincool.net">bookboss.chillincool.net</a>.</li>
+      <li>Click <span class="btn">Sign in with Keycloak</span> and sign in.</li>
+      <li>Browse by title, author, or series. Open a book and download it.</li>
+    </ol>
+    <h3>Reading on a Kindle</h3>
+    <ol>
+      <li>Download the book from BookBoss. It will be an EPUB file.</li>
+      <li>Go to <a href="https://www.amazon.com/sendtokindle">amazon.com/sendtokindle</a>, sign in with your Amazon account, and upload the file. Amazon converts it and it appears on your Kindle.</li>
+    </ol>
+    <p class="small">You can also email the file to your Kindle's own email address, which you'll find in your Amazon account under Devices. Amazon only accepts email from addresses on your approved list, which is in the same place.</p>
+    <h3>Other readers</h3>
+    <p class="small">Reading apps that support <b>OPDS</b> can connect to BookBoss directly. Your OPDS address and password are on your BookBoss profile page. Kobo e-readers can also sync from your profile page.</p>
+  </section>
+
+  <section id="find" aria-labelledby="sm-h">
+    <div class="sechead"><h2 id="sm-h">4. Requesting new books: Shelfmark</h2><span class="chip anywhere">Works anywhere</span></div>
+    <ol>
+      <li>Go to <a href="https://shelfmark.chillincool.net">shelfmark.chillincool.net</a> and sign in with Keycloak.</li>
+      <li>Search for a book, then choose whether you want the <b>ebook</b> or the <b>audiobook</b>.</li>
+      <li>Pick a result and request it. For audiobooks, look for formats like m4b or mp3 and sizes in the hundreds of MB. Ebooks are EPUB files of a few MB.</li>
+    </ol>
+    <p>Chris approves each request. Once it's approved and downloaded, audiobooks appear in Audiobookshelf and ebooks appear in BookBoss.</p>
+  </section>
+
+  <section id="help" aria-labelledby="help-h">
+    <div class="sechead"><h2 id="help-h">If something goes wrong</h2></div>
+    <dl>
+      <div><dt>"Access denied" after signing in</dt><dd>Your account hasn't been given access to that app yet. Ask Chris.</dd></div>
+      <div><dt>"Unauthorized" in Audiobookshelf</dt><dd>You used the username and password boxes. Use the <b>Login with Keycloak</b> button instead.</dd></div>
+      <div><dt>The 6-digit code is rejected</dt><dd>Codes change every 30 seconds, so type the one currently showing. If it keeps failing, check your phone's date and time are set automatically.</dd></div>
+      <div><dt>New phone, or lost your authenticator app</dt><dd>Ask Chris to reset it. You'll set it up again the next time you sign in.</dd></div>
+      <div><dt>The setup email link doesn't work</dt><dd>It has expired. Ask Chris to send a new one.</dd></div>
+      <div><dt>BookBoss says no account exists</dt><dd>Chris needs to create your BookBoss account with your email first.</dd></div>
+    </dl>
+  </section>
+
+  <footer>Questions? Ask Chris.</footer>
+</div>
+</body>
+</html>
