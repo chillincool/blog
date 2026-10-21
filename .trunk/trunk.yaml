@@ -16,9 +16,20 @@ runtimes:
     - python@3.10.8
 # This is the section where you manage your linters. (https://docs.trunk.io/check/configuration)
 lint:
+  definitions:
+    # Run the project's own ESLint: Trunk's bundled copy can't load
+    # eslint-config-next (@rushstack/eslint-patch rejects it).
+    - name: eslint
+      commands:
+        - name: lint
+          version: '>=9.0.0'
+          run:
+            ${workspace}/node_modules/.bin/eslint --output-file ${tmpfile}
+            --format json ${target}
   enabled:
     - checkov@3.2.461
     - dotenv-linter@3.3.0
+    - eslint@9.39.5
     - git-diff-check
     - markdownlint@0.45.0
     - osv-scanner@2.0.3
@@ -27,10 +38,6 @@ lint:
     - svgo@4.0.0
     - trufflehog@3.90.3
     - yamllint@1.37.1
-  disabled:
-    # project ESLint already runs via husky/lint-staged; Trunk's bundled copy
-    # can't load eslint-config-next (@rushstack/eslint-patch)
-    - eslint
 actions:
   enabled:
     - trunk-announce
