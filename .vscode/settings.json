@@ -20,7 +20,9 @@
   ],
 
   // Tailwind CSS IntelliSense
-  "files.associations": { "*.css": "tailwindcss" },
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
   "tailwindCSS.includeLanguages": {
     "typescript": "javascript",
     "typescriptreact": "javascript"
@@ -63,7 +65,13 @@
 
   // Code Spell Checker – typos
   "cSpell.language": "en-US",
-  "cSpell.enableFiletypes": ["markdown", "plaintext", "yaml", "json"],
+  "cSpell.enabledFileTypes": {
+    "markdown": true,
+    "mdx": true,
+    "plaintext": true,
+    "yaml": true,
+    "json": true
+  },
   "cSpell.userWords": [
     "TailwindCSS",
     "TypeScript",
