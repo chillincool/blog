@@ -19,7 +19,6 @@ lint:
   enabled:
     - checkov@3.2.461
     - dotenv-linter@3.3.0
-    - eslint@9.33.0
     - git-diff-check
     - markdownlint@0.45.0
     - osv-scanner@2.0.3
@@ -28,6 +27,10 @@ lint:
     - svgo@4.0.0
     - trufflehog@3.90.3
     - yamllint@1.37.1
+  disabled:
+    # project ESLint already runs via husky/lint-staged; Trunk's bundled copy
+    # can't load eslint-config-next (@rushstack/eslint-patch)
+    - eslint
 actions:
   enabled:
     - trunk-announce
