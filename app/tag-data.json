@@ -1,4 +1,13 @@
 {
+  "identity": 1,
+  "idp": 1,
+  "sso": 1,
+  "oidc": 1,
+  "oauth2": 1,
+  "keycloak": 1,
+  "envoy-gateway": 1,
+  "kubernetes": 1,
+  "talos": 1,
   "streaming": 1,
   "debrid": 1,
   "torrent": 1,
