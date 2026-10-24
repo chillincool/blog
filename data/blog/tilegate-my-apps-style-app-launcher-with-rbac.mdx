@@ -1,0 +1,257 @@
+---
+title: 'tilegate: My Apps style app launcher with RBAC'
+date: 2026-10-24T19:02:12Z
+lastmod: 2026-10-24T19:14:08Z
+tags:
+  - tilegate
+  - homelab
+  - self-hosted
+  - sso
+  - oidc
+  - keycloak
+  - kubernetes
+  - helm
+  - go
+draft: false
+summary:
+  'I wanted a self-hosted version of Microsoft My Apps: one page of app tiles
+  where each person only sees the apps their roles allow. So I built tilegate.'
+images:
+  - /static/images/tilegate/admin-light.png
+authors:
+  - Chris Sykes
+---
+
+## Introduction
+
+Once I had everything behind
+[one Keycloak login](/blog/keycloak-self-hosted-idp), the next question was
+obvious: where do people actually go to find their apps?
+
+At work that answer is Microsoft My Apps. You sign in and get a page of tiles,
+and the tiles are exactly the apps you've been given access to. Nothing more.
+New hire, contractor, the CEO: same URL, a different page for each.
+
+I wanted that for my homelab. My family should see Immich, Jellyfin and
+Audiobookshelf. I should see those plus Grafana, Proxmox and the Keycloak admin
+console. Nobody else needs to know that Radarr exists.
+
+I couldn't find a self-hosted app that did that one thing, so I built one. It's
+called **[tilegate](https://github.com/chillincool/tilegate)**.
+
+![tilegate signed in as an admin](/static/images/tilegate/admin-light.png)
+
+<TOCInline toc={props.toc} asDisclosure />
+
+## What I tried first
+
+I tried three of the popular self-hosted dashboards before writing anything.
+Each is a good app. None of them was built for the problem I had.
+
+- **[Homepage](https://gethomepage.dev/)** is fast and looks great, but every
+  visitor sees the same page. Showing different apps to different people means
+  running a separate instance for each audience.
+- **[Homarr](https://homarr.dev/)** has users and groups, but permissions apply
+  to whole boards. I could build a "family" board and an "admin" board, but not
+  one page where each tile has its own audience.
+- **[Dashy](https://dashy.to/)** has per-item visibility, but its login runs in
+  the browser. The whole config, hidden items included, is sent to every
+  visitor, so it hides tiles without keeping them private.
+
+I still run Homarr. It's the nicest dashboard of the three for my own use, with
+widgets, status checks and lots of customisation. tilegate doesn't try to
+replace it.
+
+tilegate is closer to an access portal than a dashboard. It answers one
+question, "which apps can _this person_ use?", and it answers it on the server.
+
+## How it works
+
+You list your apps in a YAML file and say which roles or groups may see each
+one:
+
+```yaml
+title: My Apps
+apps:
+  - name: Immich
+    url: https://photos.example.com
+    icon: di:immich
+    roles: [family, admins] # users with ANY of these roles see it
+
+  - name: Grafana
+    url: https://grafana.example.com
+    icon: di:grafana
+    category: Infrastructure
+    roles: [admins]
+
+  - name: Vaultwarden
+    url: https://vault.example.com
+    icon: di:vaultwarden
+    # no roles: every signed-in user sees it
+```
+
+When someone signs in, tilegate reads their roles from their OIDC token and
+renders only the tiles that match. Apps a user can't see are never sent to their
+browser. They're not hidden with CSS or filtered in JavaScript; they aren't in
+the page at all.
+
+Here's the same tilegate, signed in as a family member instead of an admin:
+
+![A user with fewer roles sees only family and media apps](/static/images/tilegate/family-light.png)
+
+Roles can come from any claim in the token: `groups`, Keycloak's
+`realm_access.roles`, a client's `resource_access.<client>.roles`, or a
+namespaced claim. A single app can also check its own claim, which suits setups
+where each app has its own Keycloak client role. It works with Keycloak,
+Authentik, Authelia, Zitadel or any other OIDC provider.
+
+The apps file reloads on its own when it changes, so editing a ConfigMap is
+enough to add an app. The file is also validated strictly. A typo like `role:`
+instead of `roles:` is rejected, rather than quietly making an app visible to
+everyone.
+
+## Two ways to sign in
+
+tilegate can handle sign-in itself, or fit behind an auth proxy you already run.
+
+| Mode           | Use it when                                                                         |
+| -------------- | ----------------------------------------------------------------------------------- |
+| `oidc`         | You want tilegate to do the login itself. Nothing else needed.                      |
+| `proxy-jwt`    | A proxy (Envoy Gateway, oauth2-proxy, Traefik) signs users in and forwards a token. |
+| `proxy-header` | Your proxy can only pass plain headers like `X-Forwarded-Groups`.                   |
+
+My cluster uses the second one. As described in the
+[Keycloak post](/blog/keycloak-self-hosted-idp#apps-without-oidc), Envoy Gateway
+handles login for apps with a `SecurityPolicy` and forwards the access token.
+tilegate checks that token's signature against Keycloak's keys before trusting a
+single claim, so a request that sneaks around the proxy can't claim to be
+someone else.
+
+## The nice-to-haves
+
+- **Favourites.** Users star the apps they use most, and those stay at the top
+  of the page on every device. This needs a database: SQLite, PostgreSQL, or a
+  CloudNativePG cluster the Helm chart creates for you.
+- **Light and dark mode**, picked per user, plus theming for tile size, colours,
+  backgrounds, logo and custom CSS.
+- **Skipping app login pages.** A lot of apps show their own login screen with a
+  "Sign in with SSO" button. A per-app `loginURL` sends the tile straight to the
+  SSO entry point, so if you're already signed in to Keycloak you land in the
+  app with no login screen at all.
+- **Icons** from the [dashboard-icons](https://dashboardicons.com) project by
+  name (`di:grafana`), any image URL, or your own folder.
+- **Works on a phone.**
+
+![Favourites row above the other sections](/static/images/tilegate/favorites.png)
+
+<div className="mx-auto max-w-xs">
+
+![tilegate on a phone in dark mode](/static/images/tilegate/mobile-dark.png)
+
+</div>
+
+## Built to be trusted
+
+An app that decides who sees what had better be boring and careful, so I spent
+as much time on how tilegate is built and shipped as on the app itself.
+
+**It's one small Go binary.** It's mostly the standard library, with three
+runtime dependencies. It runs in a distroless image of about 12 MB with no
+shell, as a non-root user on a read-only filesystem with all Linux capabilities
+dropped. Images are built for amd64 and arm64.
+
+**Sign-in follows the boring, correct path.** The built-in login uses the
+authorization code flow with PKCE and checks `state` and `nonce`. Sessions live
+in AES-GCM encrypted cookies, so users can't read or edit their own roles. The
+page has a strict Content-Security-Policy, and writes like favourites are
+refused if they come from another site.
+
+**The tests use a real identity provider.** On every pull request, CI creates a
+throwaway Kubernetes cluster with kind, then installs Keycloak, Envoy Gateway
+and CloudNativePG into it. Then it signs test users in through Keycloak's real
+login form, the way a browser would, and checks things like:
+
+- each user gets exactly their own apps, and nothing else
+- hidden apps don't appear anywhere in the page source
+- a user can't favourite an app they can't see
+- a request that bypasses Envoy, or carries a forged token, gets a 401
+- favourites stay consistent across two replicas sharing PostgreSQL
+
+That runs on both amd64 and arm64 runners, so the arm64 image is actually
+tested, not just built.
+
+**Releases can't be quietly changed.** Pushing a version tag builds the image
+and Helm chart, publishes them to GHCR, and creates a GitHub release. Release
+tags are protected and releases are immutable, so `v0.1.2` will always mean the
+same code. Every image and chart is signed with cosign using GitHub's keyless
+signing, and ships with an SBOM and build provenance. You can check that what
+you're about to run came from tilegate's own release workflow:
+
+```sh
+cosign verify ghcr.io/chillincool/tilegate:0.1.2 \
+  --certificate-identity-regexp '^https://github.com/chillincool/tilegate/\.github/workflows/release\.yml@refs/tags/v' \
+  --certificate-oidc-issuer https://token.actions.githubusercontent.com
+```
+
+**The repo holds its owner to the same rules.** `main` only takes changes
+through pull requests, and every check has to pass, with no bypass, even for me.
+GitHub Actions are pinned to commit SHAs, CodeQL and `govulncheck` scan every
+change, and Renovate keeps every dependency current. A solo maintainer is the
+easiest account to compromise and the likeliest to cut corners at 1am, so the
+repo doesn't let me.
+
+## One thing to know up front
+
+**tilegate controls which links people see, not who can open the apps.** Hiding
+a tile doesn't block the app. If someone knows the URL, the app itself still has
+to stop them, through its own login or a proxy in front of it.
+
+That's how My Apps works too. In practice it fits well with an IdP setup where
+access is already enforced per app, like the one in my
+[Keycloak post](/blog/keycloak-self-hosted-idp). Keycloak and the proxy decide
+who gets in; tilegate makes sure each person's page only shows them the doors
+they can open.
+
+## Try it
+
+To see the filtering without setting up a login, run it in `dev` mode. Every
+visitor is treated as a member of the groups you list:
+
+```sh
+curl -O https://raw.githubusercontent.com/chillincool/tilegate/main/examples/apps.yaml
+docker run --rm -p 8080:8080 -v "$PWD/apps.yaml:/config/apps.yaml:ro" \
+  -e TILEGATE_AUTH_MODE=dev -e TILEGATE_DEV_GROUPS=family,media \
+  ghcr.io/chillincool/tilegate:latest
+```
+
+Change `TILEGATE_DEV_GROUPS` to `admins` and the page changes with it.
+
+For a demo with a real login, the repo has a Docker Compose example with
+Keycloak and three test users who each see different tiles:
+
+```sh
+git clone https://github.com/chillincool/tilegate
+cd tilegate/examples/docker-compose
+docker compose up --build
+```
+
+On Kubernetes, install the Helm chart from GHCR (it's also listed on
+[Artifact Hub](https://artifacthub.io/packages/search?ts_query_web=tilegate)):
+
+```sh
+helm install tilegate oci://ghcr.io/chillincool/charts/tilegate -f values.yaml
+```
+
+The chart can create a Gateway API `HTTPRoute` or an Ingress, a PVC for SQLite,
+or a CloudNativePG cluster. It also ships a values schema, so a misspelt setting
+fails at install time instead of being silently ignored.
+
+## Who it's for
+
+If you run a homelab that more than one person uses, or a small business with an
+IdP and a dozen internal tools, and you've wanted one URL that gives everyone
+the right list of apps, that's what tilegate is for.
+
+It's MIT licensed and on [GitHub](https://github.com/chillincool/tilegate).
+Issues, ideas and pull requests are welcome, and if you set it up, I'd like to
+hear how it went.

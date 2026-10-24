@@ -1,0 +1,94 @@
+{
+  "$schema": "https://frontmatter.codes/frontmatter.schema.json",
+  "frontMatter.framework.id": "next",
+  "frontMatter.content.publicFolder": "public",
+  "frontMatter.preview.host": "http://localhost:3000",
+  "frontMatter.taxonomy.dateFormat": "yyyy-MM-dd'T'HH:mm:ssXXX",
+  "frontMatter.taxonomy.seoDescriptionField": "summary",
+  "frontMatter.content.draftField": {
+    "name": "draft",
+    "type": "boolean"
+  },
+  "frontMatter.content.pageFolders": [
+    {
+      "title": "blog",
+      "path": "[[workspace]]/data/blog",
+      "contentTypes": ["blog"]
+    }
+  ],
+  "frontMatter.taxonomy.contentTypes": [
+    {
+      "name": "blog",
+      "fileType": "mdx",
+      "pageBundle": false,
+      "previewPath": "/blog",
+      "fields": [
+        {
+          "title": "Title",
+          "name": "title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "title": "Date",
+          "name": "date",
+          "type": "datetime",
+          "default": "{{now}}",
+          "isPublishDate": true,
+          "required": true
+        },
+        {
+          "title": "Last modified",
+          "name": "lastmod",
+          "type": "datetime",
+          "default": "{{now}}",
+          "isModifiedDate": true
+        },
+        {
+          "title": "Tags",
+          "name": "tags",
+          "type": "tags"
+        },
+        {
+          "title": "Draft",
+          "name": "draft",
+          "type": "draft",
+          "default": true
+        },
+        {
+          "title": "Summary",
+          "name": "summary",
+          "type": "string",
+          "single": false
+        },
+        {
+          "title": "Images",
+          "name": "images",
+          "type": "image",
+          "multiple": true
+        },
+        {
+          "title": "Authors",
+          "name": "authors",
+          "type": "list"
+        },
+        {
+          "title": "Layout",
+          "name": "layout",
+          "type": "choice",
+          "choices": ["PostLayout", "PostSimple", "PostBanner"]
+        },
+        {
+          "title": "Canonical URL",
+          "name": "canonicalUrl",
+          "type": "string"
+        },
+        {
+          "title": "Bibliography",
+          "name": "bibliography",
+          "type": "string"
+        }
+      ]
+    }
+  ]
+}
