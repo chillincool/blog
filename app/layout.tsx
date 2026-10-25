@@ -56,6 +56,9 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     images: [siteMetadata.socialBanner],
   },
+  verification: {
+    google: 'g_eu04Yb5KdlGrxJHAmmIUGdGLEZJcgFxfyCYm_n404',
+  },
 }
 
 export default function RootLayout({
