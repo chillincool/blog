@@ -85,11 +85,11 @@ footer { color: var(--muted); font-size: 0.93rem; text-align: center; }
   <header>
     <div class="eyebrow">Chillincool · New user guide</div>
     <h1>Your library, set up</h1>
-    <p class="lede">Audiobooks to listen to on the go, ebooks to read, and a way to find new books, all from anywhere. This page walks you through your account first, then each piece.</p>
-    <div class="services" aria-label="What you have access to">
-      <div class="svc"><b>Audiobookshelf</b><span>Listen to audiobooks on the web or your phone</span><span class="chip anywhere">Works anywhere</span></div>
-      <div class="svc"><b>BookBoss</b><span>Browse and download ebooks</span><span class="chip anywhere">Works anywhere</span></div>
-      <div class="svc"><b>Shelfmark</b><span>Request books and audiobooks</span><span class="chip anywhere">Works anywhere</span></div>
+    <p class="lede">Audiobooks to listen to on the go, ebooks to read, and a way to ask for new books, all in one app called <b>BookOrbit</b> that works from anywhere. This page walks you through your account first, then each piece.</p>
+    <div class="services" aria-label="What you can do in BookOrbit">
+      <div class="svc"><b>Listen</b><span>Audiobooks on the web or your phone</span><span class="chip anywhere">Works anywhere</span></div>
+      <div class="svc"><b>Read</b><span>Ebooks in your browser, phone, Kindle, or Kobo</span><span class="chip anywhere">Works anywhere</span></div>
+      <div class="svc"><b>Request</b><span>Ask for books and audiobooks you want</span><span class="chip anywhere">Works anywhere</span></div>
     </div>
   </header>
 
@@ -113,82 +113,74 @@ footer { color: var(--muted); font-size: 0.93rem; text-align: center; }
       <li>Type the 6-digit code from the app into Keycloak to confirm. You can leave the device name blank.</li>
     </ol>
     <h3>Signing in from now on</h3>
-    <p>Whenever an app sends you to <span class="addr">login.chillincool.net</span>, enter your username or email and password, then the current 6-digit code from your authenticator app. Phone apps like Audiobookshelf stay signed in, so you won't do this often.</p>
+    <p>Whenever an app sends you to <span class="addr">login.chillincool.net</span>, enter your username or email and password, then the current 6-digit code from your authenticator app. The BookOrbit phone app stays signed in, so you won't do this often.</p>
     <div class="note">
       <p><b>Managing your account:</b> go to <a href="https://login.chillincool.net">login.chillincool.net</a> to change your password or authenticator app. You can also add a passkey there; signing in with a passkey skips the 6-digit code.</p>
       <p><b>Forgot your password?</b> Click <span class="btn">Forgot Password?</span> on the sign-in page and Keycloak will email you a reset link.</p>
     </div>
   </section>
 
-  <section id="audiobooks" aria-labelledby="abs-h">
-    <div class="sechead"><h2 id="abs-h">2. Audiobooks: Audiobookshelf</h2><span class="chip anywhere">Works anywhere</span></div>
+  <section id="bookorbit" aria-labelledby="bo-h">
+    <div class="sechead"><h2 id="bo-h">2. Getting into BookOrbit</h2><span class="chip anywhere">Works anywhere</span></div>
     <h3>On the web</h3>
     <ol>
-      <li>Go to <a href="https://audiobookshelf.chillincool.net">audiobookshelf.chillincool.net</a>.</li>
-      <li>Click <span class="btn">Login with Keycloak</span>. Don't type into the username and password boxes above it; those are for a different kind of account and will say "Unauthorized".</li>
-      <li>Sign in with your Keycloak account. You'll land in the library.</li>
+      <li>Go to <a href="https://bookorbit.chillincool.net">bookorbit.chillincool.net</a>.</li>
+      <li>Click <span class="btn">Keycloak</span> and sign in with your Keycloak account.</li>
+      <li>You'll land in the library. Your BookOrbit account is created automatically the first time you sign in.</li>
     </ol>
     <h3>On your phone</h3>
-    <div class="apps">
-      <div class="app">
-        <h3>iPhone: Plappa</h3>
-        <p>Install <b>Plappa</b> from the App Store. It's free to listen. Downloading books for offline listening is a one-time $4.99 upgrade inside the app.</p>
-        <ol>
-          <li>Add a server and enter <span class="addr">https://audiobookshelf.chillincool.net</span></li>
-          <li>Choose the <b>SSO / OpenID</b> sign-in option, not username and password.</li>
-          <li>Sign in with Keycloak when it opens the login page.</li>
-        </ol>
-      </div>
-      <div class="app">
-        <h3>Android: Audiobookshelf</h3>
-        <p>Install the official <b>Audiobookshelf</b> app from the Google Play Store. It's free, including downloads.</p>
-        <ol>
-          <li>Enter the server address <span class="addr">https://audiobookshelf.chillincool.net</span></li>
-          <li>Tap <span class="btn">Login with Keycloak</span>.</li>
-          <li>Sign in with Keycloak when it opens the login page.</li>
-        </ol>
-      </div>
-    </div>
-    <p class="small">Your listening position syncs between the website and your phone, so you can pick up where you left off on either. Download books before a trip or a long drive in case you lose signal.</p>
+    <p>Install the <b>BookOrbit</b> app from the App Store (iPhone) or the Google Play Store (Android).</p>
+    <ol>
+      <li>Enter the server address <span class="addr">https://bookorbit.chillincool.net</span></li>
+      <li>Choose <span class="btn">Keycloak</span> to sign in. There is no separate BookOrbit password.</li>
+      <li>Sign in with Keycloak when it opens the login page.</li>
+    </ol>
+    <p class="small">The app may offer a paid Premium upgrade. You don't need it to read or listen; ask Chris if you're unsure.</p>
   </section>
 
-  <section id="ebooks" aria-labelledby="bb-h">
-    <div class="sechead"><h2 id="bb-h">3. Ebooks: BookBoss</h2><span class="chip anywhere">Works anywhere</span></div>
-    <p>Before your first visit, Chris needs to create your BookBoss account using the same email address as your Keycloak account. Ask Chris to set it up.</p>
+  <section id="audiobooks" aria-labelledby="abs-h">
+    <div class="sechead"><h2 id="abs-h">3. Audiobooks</h2><span class="chip anywhere">Works anywhere</span></div>
     <ol>
-      <li>Go to <a href="https://bookboss.chillincool.net">bookboss.chillincool.net</a>.</li>
-      <li>Click <span class="btn">Sign in with Keycloak</span> and sign in.</li>
-      <li>Browse by title, author, or series. Open a book and download it.</li>
+      <li>Open an audiobook in BookOrbit, on the web or in the app.</li>
+      <li>Press play. On your phone it keeps playing in the background.</li>
     </ol>
+    <p class="small">Your listening position syncs between the website and your phone, so you can pick up where you left off on either. Download books in the app before a trip or a long drive in case you lose signal.</p>
+  </section>
+
+  <section id="ebooks" aria-labelledby="eb-h">
+    <div class="sechead"><h2 id="eb-h">4. Ebooks</h2><span class="chip anywhere">Works anywhere</span></div>
+    <p>Browse by title, author, or series. Open a book to read it right in your browser or the phone app, or download the file to read somewhere else.</p>
     <h3>Reading on a Kindle</h3>
     <ol>
-      <li>Download the book from BookBoss. It will be an EPUB file.</li>
+      <li>Download the book from BookOrbit. It will be an EPUB file.</li>
       <li>Go to <a href="https://www.amazon.com/sendtokindle">amazon.com/sendtokindle</a>, sign in with your Amazon account, and upload the file. Amazon converts it and it appears on your Kindle.</li>
     </ol>
     <p class="small">You can also email the file to your Kindle's own email address, which you'll find in your Amazon account under Devices. Amazon only accepts email from addresses on your approved list, which is in the same place.</p>
-    <h3>Other readers</h3>
-    <p class="small">Reading apps that support <b>OPDS</b> can connect to BookBoss directly. Your OPDS address and password are on your BookBoss profile page. Kobo e-readers can also sync from your profile page.</p>
+    <h3>Reading on a Kobo</h3>
+    <p class="small">BookOrbit can send books to a Kobo e-reader and keep your place in sync. Setting it up takes a USB cable and a small settings change on the Kobo, so ask Chris to help the first time. It starts in BookOrbit under <b>Settings &gt; Kobo</b>.</p>
+    <h3>Other reading apps</h3>
+    <p class="small">Reading apps that support <b>OPDS</b> (like KOReader or Moon+ Reader) can connect to BookOrbit directly. In BookOrbit, go to <b>Settings &gt; OPDS</b>, copy the address shown there, and create an OPDS username and password. That username and password are only for the reading app, not your Keycloak login.</p>
   </section>
 
-  <section id="find" aria-labelledby="sm-h">
-    <div class="sechead"><h2 id="sm-h">4. Requesting new books: Shelfmark</h2><span class="chip anywhere">Works anywhere</span></div>
+  <section id="find" aria-labelledby="rq-h">
+    <div class="sechead"><h2 id="rq-h">5. Requesting new books</h2><span class="chip anywhere">Works anywhere</span></div>
     <ol>
-      <li>Go to <a href="https://shelfmark.chillincool.net">shelfmark.chillincool.net</a> and sign in with Keycloak.</li>
-      <li>Search for a book, then choose whether you want the <b>ebook</b> or the <b>audiobook</b>.</li>
-      <li>Pick a result and request it. For audiobooks, look for formats like m4b or mp3 and sizes in the hundreds of MB. Ebooks are EPUB files of a few MB.</li>
+      <li>In BookOrbit, open <b>Requests</b> from the menu and go to <b>Request a book</b>.</li>
+      <li>Search by title or author, then choose <b>E-book</b> or <b>Audiobook</b>. If you want both, make two requests.</li>
+      <li>Press <span class="btn">Request</span>. If someone already asked for the same book, the button says <span class="btn">Add me too</span>, and you'll be notified along with them.</li>
     </ol>
-    <p>Chris approves each request. Once it's approved and downloaded, audiobooks appear in Audiobookshelf and ebooks appear in BookBoss.</p>
+    <p>Chris approves each request. You can follow it under <b>My requests</b>, and once it's downloaded the book shows up in your BookOrbit library.</p>
   </section>
 
   <section id="help" aria-labelledby="help-h">
     <div class="sechead"><h2 id="help-h">If something goes wrong</h2></div>
     <dl>
       <div><dt>"Access denied" after signing in</dt><dd>Your account hasn't been given access to that app yet. Ask Chris.</dd></div>
-      <div><dt>"Unauthorized" in Audiobookshelf</dt><dd>You used the username and password boxes. Use the <b>Login with Keycloak</b> button instead.</dd></div>
+      <div><dt>No Requests in the BookOrbit menu</dt><dd>Your account hasn't been given permission to request books yet. Ask Chris.</dd></div>
       <div><dt>The 6-digit code is rejected</dt><dd>Codes change every 30 seconds, so type the one currently showing. If it keeps failing, check your phone's date and time are set automatically.</dd></div>
       <div><dt>New phone, or lost your authenticator app</dt><dd>Ask Chris to reset it. You'll set it up again the next time you sign in.</dd></div>
       <div><dt>The setup email link doesn't work</dt><dd>It has expired. Ask Chris to send a new one.</dd></div>
-      <div><dt>BookBoss says no account exists</dt><dd>Chris needs to create your BookBoss account with your email first.</dd></div>
+      <div><dt>The phone app can't reach the server</dt><dd>Check that <span class="addr">https://bookorbit.chillincool.net</span> opens in your phone's web browser, and that the address in the app is typed exactly the same.</dd></div>
     </dl>
   </section>
 
